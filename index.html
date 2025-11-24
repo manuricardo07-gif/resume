@@ -4,205 +4,237 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Manuel Ricardo – Resume</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lora&display=swap" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet" />
+
   <style>
-    /* Reset */
+    :root {
+      --bg: #f4f6f9;
+      --text: #2c3e50;
+      --card: #ffffff;
+      --primary: #2980b9;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark {
+      --bg: #1d1f21;
+      --text: #f5f5f5;
+      --card: #2a2c2e;
+      --primary: #74b9ff;
+      --shadow: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Global */
     * {
+      margin: 0; padding: 0;
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Lora', serif;
-      background-color: #f0f2f5;
-      color: #2c3e50;
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      line-height: 1.6;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    header h1 {
       font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: var(--card);
+      padding: 40px 20px;
+      box-shadow: 3px 0 20px var(--shadow);
+      position: fixed;
+      height: 100%;
+    }
+
+    .sidebar h1 {
+      font-size: 1.8rem;
       font-weight: 700;
-      font-size: 3rem;
-      color: #34495e;
-      margin-bottom: 10px;
-      letter-spacing: 2px;
+      margin-bottom: 5px;
+      color: var(--primary);
     }
 
-    header p {
-      font-style: italic;
-      color: #7f8c8d;
-      font-size: 1rem;
+    .sidebar p {
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      opacity: 0.8;
     }
 
-    .contact-info {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .contact-info a {
-      color: #2980b9;
+    .sidebar a {
+      display: block;
+      padding: 12px 14px;
+      margin: 8px 0;
+      background: var(--primary);
+      color: white;
       text-decoration: none;
-      margin: 0 10px;
+      text-align: center;
+      border-radius: 8px;
       font-weight: 600;
+      transition: 0.2s ease;
     }
 
-    .contact-info a:hover {
-      text-decoration: underline;
+    .sidebar a:hover {
+      background: #1f6fa3;
+    }
+
+    /* THEME BTN */
+    .theme-toggle {
+      margin-top: 20px;
+      padding: 10px;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .theme-toggle:hover {
+      background: #1f6fa3;
+    }
+
+    /* CONTENT */
+    .content {
+      margin-left: 280px;
+      padding: 50px 40px;
+      max-width: 900px;
+      width: 100%;
     }
 
     section {
-      background: white;
-      padding: 30px 40px;
-      margin-bottom: 30px;
+      background: var(--card);
+      padding: 30px;
+      margin-bottom: 35px;
       border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
-      transition: box-shadow 0.3s ease;
+      box-shadow: 0 10px 20px var(--shadow);
+      transition: 0.2s ease;
     }
 
     section:hover {
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px var(--shadow);
     }
 
     section h2 {
-      font-family: 'Montserrat', sans-serif;
+      font-size: 1.7rem;
       font-weight: 700;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      border-bottom: 3px solid #2980b9;
-      padding-bottom: 8px;
-      color: #2c3e50;
-      letter-spacing: 1.5px;
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      line-height: 1.6;
     }
 
     ul {
-      list-style-type: disc;
       margin-left: 20px;
-      color: #34495e;
-      font-size: 1.1rem;
     }
 
-    ul li {
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      color: #34495e;
-    }
-
-    .job-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #2980b9;
-    }
-
-    .company-location {
-      font-style: italic;
-      color: #7f8c8d;
-      margin-bottom: 5px;
-    }
-
-    .job-dates {
-      font-size: 0.95rem;
-      color: #95a5a6;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      text-align: center;
-      color: #95a5a6;
-      font-size: 0.9rem;
-      margin-top: 50px;
-      font-style: italic;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        margin: 20px;
-        padding: 15px;
+    /* Responsive */
+    @media (max-width: 800px) {
+      body { flex-direction: column; }
+      .sidebar {
+        position: relative;
+        width: 100%;
+        box-shadow: none;
       }
-      header h1 {
-        font-size: 2.2rem;
-      }
-      section {
-        padding: 20px 25px;
+      .content {
+        margin-left: 0;
+        padding: 20px;
       }
     }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Manuel Ricardo</h1>
-    <p>Student of Computer Science | Miami Gardens, FL</p>
-  </header>
 
-  <div class="contact-info">
-    <a href="mailto:manuricardo07@gmail.com">manuricardo07@gmail.com</a> |
-    <a href="tel:+13059884190">305-988-4190</a>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h1>Manuel Ricardo</h1>
+    <p>Computer Science Student — Miami, FL</p>
+
+    <a href="#summary">Summary</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
+    <a href="#languages">Languages</a>
+    <a href="mailto:manuricardo07@gmail.com">Contact Me</a>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+      Toggle Dark / Light Mode
+    </div>
   </div>
 
-  <section>
-    <h2>Professional Summary</h2>
-    <p>
-      Student of Computer Science at St. Thomas University. Passionate about technology and software development, with foundational knowledge in web development and programming. Open to opportunities to grow and gain hands-on experience in the tech industry. Available part-time.
-    </p>
-  </section>
+  <!-- Main Content -->
+  <div class="content">
 
-  <section>
-    <h2>Work Experience</h2>
+    <section id="summary">
+      <h2>Professional Summary</h2>
+      <p>
+        Computer Science student at St. Thomas University. Passionate about technology, software development,
+        and building innovative digital solutions. Looking for part-time opportunities in tech to grow real-world skills.
+      </p>
+    </section>
 
-    <div>
-      <div class="job-title">Remote Developer - Globant</div>
-      <div class="company-location">Argentina (Remote)</div>
-      <div class="job-dates">2023 – Present</div>
-      <p>Currently working remotely at Globant, contributing to software development projects and collaborating with a global team.</p>
-    </div>
+    <section id="experience">
+      <h2>Work Experience</h2>
 
-    <div style="margin-top: 20px;">
-      <div class="job-title">Developer - Coderhouse</div>
-      <div class="company-location">Argentina</div>
-      <div class="job-dates">Previous Role</div>
-      <p>Worked on various development projects, focusing on web technologies and software best practices.</p>
-    </div>
-  </section>
+      <h3>Remote Developer — Globant</h3>
+      <p><i>Argentina (Remote) — 2023 to Present</i></p>
+      <p>Working with international teams on modern software projects.</p>
 
-  <section>
-    <h2>Education</h2>
-    <ul>
-      <li><strong>St. Thomas University</strong> – Student of Computer Science</li>
-      <li><strong>Thomas Jefferson College</strong>, Moreno, Buenos Aires, Argentina (2013 – 2025)</li>
-    </ul>
-  </section>
+      <br>
 
-  <section>
-    <h2>Skills</h2>
-    <ul>
-      <li>HTML</li>
-      <li>Git &amp; GitHub</li>
-      <li>Basic Java</li>
-    </ul>
-  </section>
+      <h3>Developer — Coderhouse</h3>
+      <p><i>Argentina — Previous Role</i></p>
+      <p>Collaborated on projects involving web technologies and software best practices.</p>
+    </section>
 
-  <section>
-    <h2>Languages</h2>
-    <ul>
-      <li>English – Proficient</li>
-      <li>Spanish – Native</li>
-    </ul>
-  </section>
+    <section id="education">
+      <h2>Education</h2>
+      <ul>
+        <li><strong>St. Thomas University</strong> — Computer Science</li>
+        <li><strong>Thomas Jefferson College</strong>, Buenos Aires, Argentina (2013–2025)</li>
+      </ul>
+    </section>
 
-  <footer>
-    &copy; 2025 Manuel Ricardo — All rights reserved
-  </footer>
+    <section id="skills">
+      <h2>Skills</h2>
+      <ul>
+        <li>HTML & CSS</li>
+        <li>Git & GitHub</li>
+        <li>Java (Basic)</li>
+        <li>Python (Basic)</li>
+        <li>Responsive Web Design</li>
+      </ul>
+    </section>
+
+    <section id="languages">
+      <h2>Languages</h2>
+      <ul>
+        <li>English — Proficient</li>
+        <li>Spanish — Native</li>
+      </ul>
+    </section>
+
+    <footer style="text-align:center; opacity:0.6; margin-top:40px;">
+      © 2025 Manuel Ricardo — All rights reserved
+    </footer>
+
+  </div>
+
+  <!-- Script -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,22 +10,23 @@
 
   <style>
     :root {
-      --bg: #f4f6f9;
-      --text: #2c3e50;
+      --bg: #f5f5f5;
+      --text: #1a1a1a;
       --card: #ffffff;
-      --primary: #2980b9;
-      --shadow: rgba(0, 0, 0, 0.08);
+      --primary: #8b0000; /* rojo oscuro premium */
+      --primary-light: #aa0000;
+      --shadow: rgba(0, 0, 0, 0.12);
     }
 
     body.dark {
-      --bg: #1d1f21;
+      --bg: #111;
       --text: #f5f5f5;
-      --card: #2a2c2e;
-      --primary: #74b9ff;
-      --shadow: rgba(255, 255, 255, 0.05);
+      --card: #1c1c1c;
+      --primary: #aa0000;
+      --primary-light: #cc0000;
+      --shadow: rgba(255, 255, 255, 0.06);
     }
 
-    /* Global */
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -40,21 +41,21 @@
       width: 260px;
       background: var(--card);
       padding: 40px 20px;
-      box-shadow: 3px 0 20px var(--shadow);
       position: fixed;
       height: 100%;
+      box-shadow: 3px 0 20px var(--shadow);
     }
 
     .sidebar h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 5px;
+      font-size: 1.9rem;
       color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
     .sidebar a {
       display: block;
-      padding: 12px 14px;
+      padding: 12px;
       margin: 10px 0;
       background: var(--primary);
       color: white;
@@ -66,26 +67,26 @@
     }
 
     .sidebar a:hover {
-      background: #1f6fa3;
+      background: var(--primary-light);
     }
 
-    /* THEME BTN */
     .theme-toggle {
-      margin-top: 20px;
-      padding: 10px;
+      margin-top: 25px;
+      padding: 12px;
       text-align: center;
       background: var(--primary);
       color: white;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: 0.2s;
       font-weight: 600;
+      transition: 0.2s ease;
     }
 
+    /* CONTENT */
     .content {
       margin-left: 280px;
       padding: 50px 40px;
-      max-width: 900px;
+      max-width: 950px;
       width: 100%;
     }
 
@@ -94,13 +95,13 @@
       padding: 30px;
       margin-bottom: 35px;
       border-radius: 12px;
-      box-shadow: 0 10px 20px var(--shadow);
+      box-shadow: 0 10px 25px var(--shadow);
       transition: 0.2s ease;
     }
 
     section:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px var(--shadow);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px var(--shadow);
     }
 
     section h2 {
@@ -111,23 +112,21 @@
       margin-bottom: 18px;
     }
 
-    /* REVIEW BOX */
+    /* REVIEW SYSTEM */
     #review-box {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
-    #review-input {
+    #review-input, #review-name {
       width: 100%;
       padding: 15px;
       font-size: 1rem;
       border: 2px solid var(--primary);
-      border-radius: 10px;
       background: var(--card);
+      border-radius: 10px;
       color: var(--text);
-      min-height: 120px;
-      resize: vertical;
     }
 
     #review-btn {
@@ -136,23 +135,27 @@
       color: white;
       border: none;
       border-radius: 10px;
-      font-size: 1rem;
       cursor: pointer;
+      font-size: 1rem;
       font-weight: 600;
-      transition: 0.2s;
     }
 
     #review-btn:hover {
-      background: #1f6fa3;
+      background: var(--primary-light);
     }
 
     .review {
       background: var(--card);
       padding: 18px;
       border-radius: 10px;
-      box-shadow: 0 3px 10px var(--shadow);
-      margin-top: 10px;
+      box-shadow: 0 3px 12px var(--shadow);
+      margin-top: 15px;
       animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .review-header {
+      font-weight: 700;
+      color: var(--primary);
     }
 
     @keyframes fadeIn {
@@ -160,10 +163,36 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* CONTACT FORM */
+    input, textarea {
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      padding: 12px;
+      font-size: 1rem;
+      width: 100%;
+      background: var(--card);
+      color: var(--text);
+      margin: 8px 0;
+    }
+
+    button {
+      background: var(--primary);
+      padding: 12px 18px;
+      border-radius: 10px;
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--primary-light); }
+
+    footer { text-align: center; opacity: 0.6; margin-top: 40px; }
+
     /* Responsive */
     @media (max-width: 800px) {
       body { flex-direction: column; }
-      .sidebar { width: 100%; position: relative; box-shadow: none; }
+      .sidebar { width: 100%; position: relative; }
       .content { margin-left: 0; padding: 20px; }
     }
   </style>
@@ -171,7 +200,7 @@
 
 <body>
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <h1>Manuel Ricardo</h1>
     <p>Computer Science Student — Miami, FL</p>
@@ -182,41 +211,38 @@
     <a href="#skills">Skills</a>
     <a href="#languages">Languages</a>
     <a href="#reviews">Reviews</a>
-    <a href="mailto:manuricardo07@gmail.com">Contact Me</a>
+    <a href="#contact">Contact</a>
 
-    <div class="theme-toggle" onclick="toggleTheme()">Toggle Dark / Light Mode</div>
+    <div class="theme-toggle" onclick="toggleTheme()">Dark / Light</div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- CONTENT -->
   <div class="content">
 
     <section id="summary">
       <h2>Professional Summary</h2>
-      <p>
-        Computer Science student at St. Thomas University. Passionate about software development,
-        technology, and building innovative digital solutions.
-      </p>
+      <p>Computer Science student at St. Thomas University. Passionate about modern software development and innovative digital solutions.</p>
     </section>
 
     <section id="experience">
-      <h2>Work Experience</h2>
+      <h2>Experience</h2>
 
       <h3>Remote Developer — Globant</h3>
       <p><i>Argentina (Remote) — 2023 to Present</i></p>
-      <p>Working with international teams on modern software projects.</p>
+      <p>Collaborating with international teams on real-world software projects.</p>
 
       <br>
 
       <h3>Developer — Coderhouse</h3>
       <p><i>Argentina — Previous Role</i></p>
-      <p>Collaborated on web and software development projects.</p>
+      <p>Contributed to web development and modern programming workflows.</p>
     </section>
 
     <section id="education">
       <h2>Education</h2>
       <ul>
         <li><strong>St. Thomas University</strong> — Computer Science</li>
-        <li><strong>Thomas Jefferson College</strong>, Buenos Aires (2013–2025)</li>
+        <li><strong>Thomas Jefferson College</strong> — Buenos Aires (2013–2025)</li>
       </ul>
     </section>
 
@@ -227,7 +253,7 @@
         <li>Git & GitHub</li>
         <li>Java (Basic)</li>
         <li>Python (Basic)</li>
-        <li>Responsive Web Design</li>
+        <li>Responsive Design</li>
       </ul>
     </section>
 
@@ -239,41 +265,62 @@
       </ul>
     </section>
 
-    <!-- REVIEW SECTION -->
+    <!-- REVIEWS -->
     <section id="reviews">
       <h2>Reviews</h2>
 
       <div id="review-box">
-        <textarea id="review-input" placeholder="Write a review here..."></textarea>
+        <input id="review-name" type="text" placeholder="Your name">
+        <textarea id="review-input" placeholder="Write your review..."></textarea>
         <button id="review-btn">Post Review</button>
       </div>
 
       <div id="review-list"></div>
     </section>
 
-    <footer style="text-align:center; opacity:0.6; margin-top:40px;">
-      © 2025 Manuel Ricardo — All rights reserved
-    </footer>
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact Me</h2>
+
+      <form action="https://formsubmit.co/manuricardo07@gmail.com" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your message..." rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <footer>© 2025 Manuel Ricardo — All rights reserved</footer>
 
   </div>
 
-  <!-- Script -->
+  <!-- SCRIPT -->
   <script>
     function toggleTheme() {
       document.body.classList.toggle('dark');
     }
 
     // REVIEW SYSTEM
-    document.getElementById('review-btn').addEventListener('click', function() {
+    document.getElementById('review-btn').addEventListener('click', function () {
+      const name = document.getElementById('review-name').value.trim();
       const text = document.getElementById('review-input').value.trim();
-      if (text === "") return;
+
+      if (!name || !text) return;
+
+      const date = new Date().toLocaleString();
 
       const div = document.createElement("div");
       div.classList.add("review");
-      div.textContent = text;
+
+      div.innerHTML = `
+        <div class="review-header">${name} — <small>${date}</small></div>
+        <p>${text}</p>
+      `;
 
       document.getElementById("review-list").appendChild(div);
-      document.getElementById("review-input").value = "";
+
+      document.getElementById('review-name').value = "";
+      document.getElementById('review-input').value = "";
     });
   </script>
 

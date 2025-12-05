@@ -26,12 +26,7 @@
     }
 
     /* Global */
-    * {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--bg);
@@ -57,16 +52,10 @@
       color: var(--primary);
     }
 
-    .sidebar p {
-      font-size: 0.95rem;
-      margin-bottom: 25px;
-      opacity: 0.8;
-    }
-
     .sidebar a {
       display: block;
       padding: 12px 14px;
-      margin: 8px 0;
+      margin: 10px 0;
       background: var(--primary);
       color: white;
       text-decoration: none;
@@ -89,15 +78,10 @@
       color: white;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.9rem;
       transition: 0.2s;
+      font-weight: 600;
     }
 
-    .theme-toggle:hover {
-      background: #1f6fa3;
-    }
-
-    /* CONTENT */
     .content {
       margin-left: 280px;
       padding: 50px 40px;
@@ -127,27 +111,60 @@
       margin-bottom: 18px;
     }
 
-    p, li {
-      font-size: 1.05rem;
-      line-height: 1.6;
+    /* REVIEW BOX */
+    #review-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    ul {
-      margin-left: 20px;
+    #review-input {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    #review-btn {
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    #review-btn:hover {
+      background: #1f6fa3;
+    }
+
+    .review {
+      background: var(--card);
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px var(--shadow);
+      margin-top: 10px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Responsive */
     @media (max-width: 800px) {
       body { flex-direction: column; }
-      .sidebar {
-        position: relative;
-        width: 100%;
-        box-shadow: none;
-      }
-      .content {
-        margin-left: 0;
-        padding: 20px;
-      }
+      .sidebar { width: 100%; position: relative; box-shadow: none; }
+      .content { margin-left: 0; padding: 20px; }
     }
   </style>
 </head>
@@ -164,21 +181,20 @@
     <a href="#education">Education</a>
     <a href="#skills">Skills</a>
     <a href="#languages">Languages</a>
+    <a href="#reviews">Reviews</a>
     <a href="mailto:manuricardo07@gmail.com">Contact Me</a>
 
-    <div class="theme-toggle" onclick="toggleTheme()">
-      Toggle Dark / Light Mode
-    </div>
+    <div class="theme-toggle" onclick="toggleTheme()">Toggle Dark / Light Mode</div>
   </div>
 
-  <!-- Main Content -->
+  <!-- MAIN CONTENT -->
   <div class="content">
 
     <section id="summary">
       <h2>Professional Summary</h2>
       <p>
-        Computer Science student at St. Thomas University. Passionate about technology, software development,
-        and building innovative digital solutions. Looking for part-time opportunities in tech to grow real-world skills.
+        Computer Science student at St. Thomas University. Passionate about software development,
+        technology, and building innovative digital solutions.
       </p>
     </section>
 
@@ -193,21 +209,21 @@
 
       <h3>Developer — Coderhouse</h3>
       <p><i>Argentina — Previous Role</i></p>
-      <p>Collaborated on projects involving web technologies and software best practices.</p>
+      <p>Collaborated on web and software development projects.</p>
     </section>
 
     <section id="education">
       <h2>Education</h2>
       <ul>
         <li><strong>St. Thomas University</strong> — Computer Science</li>
-        <li><strong>Thomas Jefferson College</strong>, Buenos Aires, Argentina (2013–2025)</li>
+        <li><strong>Thomas Jefferson College</strong>, Buenos Aires (2013–2025)</li>
       </ul>
     </section>
 
     <section id="skills">
       <h2>Skills</h2>
       <ul>
-        <li>HTML & CSS</li>
+        <li>HTML, CSS</li>
         <li>Git & GitHub</li>
         <li>Java (Basic)</li>
         <li>Python (Basic)</li>
@@ -223,6 +239,18 @@
       </ul>
     </section>
 
+    <!-- REVIEW SECTION -->
+    <section id="reviews">
+      <h2>Reviews</h2>
+
+      <div id="review-box">
+        <textarea id="review-input" placeholder="Write a review here..."></textarea>
+        <button id="review-btn">Post Review</button>
+      </div>
+
+      <div id="review-list"></div>
+    </section>
+
     <footer style="text-align:center; opacity:0.6; margin-top:40px;">
       © 2025 Manuel Ricardo — All rights reserved
     </footer>
@@ -234,6 +262,19 @@
     function toggleTheme() {
       document.body.classList.toggle('dark');
     }
+
+    // REVIEW SYSTEM
+    document.getElementById('review-btn').addEventListener('click', function() {
+      const text = document.getElementById('review-input').value.trim();
+      if (text === "") return;
+
+      const div = document.createElement("div");
+      div.classList.add("review");
+      div.textContent = text;
+
+      document.getElementById("review-list").appendChild(div);
+      document.getElementById("review-input").value = "";
+    });
   </script>
 
 </body>

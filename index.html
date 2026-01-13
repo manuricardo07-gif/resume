@@ -5,13 +5,27 @@
 <title>Tabla Periódica Interactiva</title>
 
 <style>
+/* ===== THEME ===== */
+:root {
+  --bg: #0b0b0b;
+  --text: #ffffff;
+  --panel: #1a1a1a;
+}
+
+body.light {
+  --bg: #f4f4f4;
+  --text: #111111;
+  --panel: #ffffff;
+}
+
 body {
   margin: 0;
   padding: 20px;
-  background: #0b0b0b;
-  color: white;
+  background: var(--bg);
+  color: var(--text);
   font-family: Arial, sans-serif;
   text-align: center;
+  transition: background .5s, color .5s;
 }
 
 h1 { margin-bottom: 10px; }
@@ -61,6 +75,7 @@ button {
   font-weight: bold;
 }
 
+/* ===== COLORES ===== */
 .no-metal { background:#4fc3f7; color:black; }
 .gas-noble { background:#ce93d8; color:black; }
 .alcalino { background:#ffcc80; color:black; }
@@ -70,6 +85,7 @@ button {
 .lantanido { background:#b39ddb; color:black; }
 .actinido { background:#bcaaa4; color:black; }
 
+/* ===== ZOOM ===== */
 .elemento.activo {
   position: fixed;
   top: 5%;
@@ -85,6 +101,7 @@ button {
   font-size: 80px;
 }
 
+/* ===== OVERLAY ===== */
 #overlay {
   display: none;
   position: fixed;
@@ -95,9 +112,13 @@ button {
 
 #overlay.activo { display:block; }
 
-.info {
-  margin-top: 10px;
-  font-size: 14px;
+/* ===== AI PANEL ===== */
+.ai-box {
+  max-width: 600px;
+  margin: 40px auto;
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 12px;
 }
 </style>
 </head>
@@ -109,13 +130,24 @@ button {
 <div class="controls">
   <input type="text" id="search" placeholder="Buscar elemento...">
   <button id="study">Modo estudio</button>
+  <button id="themeToggle">🌙 / ☀️</button>
 </div>
 
 <div class="tabla" id="tabla"></div>
-
 <div id="overlay"></div>
 
+<!-- ===== IA ===== -->
+<div class="ai-box">
+  <h2>Asistente químico</h2>
+  <input id="aiInput" placeholder="Ej: ¿Qué es el hierro?" />
+  <button id="askAI">Preguntar</button>
+  <div id="aiAnswer"></div>
+</div>
+
 <script>
+/* ===== DATOS (los tuyos, sin tocar) ===== */
+const elementos = [
+/* TODO TU ARRAY COMPLETO TAL CUAL */<script>
 const elementos = [
 {n:1,s:"H",name:"Hidrógeno",m:"1.008",c:"no-metal",p:1},
 {n:2,s:"He",name:"Helio",m:"4.0026",c:"gas-noble",p:18},
@@ -236,8 +268,11 @@ const elementos = [
 {n:117,s:"Ts",name:"Tenesino",m:"294",c:"metaloide",p:17},
 {n:118,s:"Og",name:"Oganesón",m:"294",c:"gas-noble",p:18},// 👉 para no romper el mensaje, el resto (11–118) sigue el MISMO formato
 // En el próximo mensaje te paso el bloque COMPLETO 11–118 listo para pegar
-];
 
+];
+/* 👆 dejá exactamente el array que ya tenías */
+
+/* ===== TABLA ===== */
 const tabla = document.getElementById("tabla");
 const overlay = document.getElementById("overlay");
 const search = document.getElementById("search");
@@ -267,7 +302,7 @@ function render(data){
 overlay.onclick=()=>{
   document.querySelectorAll(".activo").forEach(e=>e.classList.remove("activo"));
   overlay.classList.remove("activo");
-}
+};
 
 search.oninput=()=>{
   const v=search.value.toLowerCase();
@@ -281,6 +316,41 @@ search.oninput=()=>{
 document.getElementById("study").onclick=()=>{
   studyMode=!studyMode;
   alert(studyMode?"Modo estudio activado":"Modo estudio desactivado");
+};
+
+/* ===== THEME ===== */
+const themeBtn = document.getElementById("themeToggle");
+if(localStorage.getItem("theme")==="light") document.body.classList.add("light");
+
+themeBtn.onclick=()=>{
+  document.body.classList.toggle("light");
+  localStorage.setItem("theme",
+    document.body.classList.contains("light")?"light":"dark"
+  );
+};
+
+/* ===== IA LOCAL ===== */
+const aiInput=document.getElementById("aiInput");
+const aiAnswer=document.getElementById("aiAnswer");
+
+document.getElementById("askAI").onclick=()=>{
+  const q=aiInput.value.toLowerCase();
+  const e=elementos.find(el=>
+    q.includes(el.name.toLowerCase()) ||
+    q.includes(el.s.toLowerCase()) ||
+    q.includes(el.n.toString())
+  );
+  if(!e){
+    aiAnswer.textContent="No encontré ese elemento.";
+    return;
+  }
+  aiAnswer.innerHTML=`
+    <b>${e.name} (${e.s})</b><br>
+    Número atómico: ${e.n}<br>
+    Masa atómica: ${e.m}<br>
+    Familia: ${e.c}<br><br>
+    👉 ${e.name} pertenece a los ${e.c} y es importante dentro de su grupo.
+  `;
 };
 
 render(elementos);

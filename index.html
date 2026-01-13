@@ -1,18 +1,123 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Tabla Periódica Interactiva</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #0f0f0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    /* ===== TABLA ===== */
+    .tabla {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 15px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* ===== ELEMENTO BASE ===== */
+    .elemento {
+      height: 90px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition:
+        width 1s ease,
+        height 1s ease,
+        transform 1s ease,
+        top 1s ease,
+        left 1s ease;
+    }
+
+    .elemento span {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .elemento small {
+      font-size: 12px;
+    }
+
+    /* ===== COLORES (TIPO TABLA REAL) ===== */
+    .no-metal { background: #4fc3f7; color: #000; }
+    .gas-noble { background: #ce93d8; color: #000; }
+    .metal { background: #ffcc80; color: #000; }
+    .metaloide { background: #a5d6a7; color: #000; }
+
+    /* ===== MODO EXPANDIDO ===== */
+    .elemento.activo {
+      position: fixed;
+      top: 10%;
+      left: 10%;
+      width: 80vw;
+      height: 80vh;
+      z-index: 999;
+      border-radius: 20px;
+    }
+
+    .elemento.activo span {
+      font-size: 72px;
+    }
+
+    .elemento.activo small {
+      font-size: 24px;
+    }
+
+    /* ===== INFO ===== */
+    #infoBox {
+      margin-top: 30px;
+      font-size: 20px;
+      min-height: 40px;
+    }
+
+    /* ===== FONDO OSCURO CUANDO SE EXPANDE ===== */
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 998;
+    }
+
+    #overlay.activo {
+      display: block;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>Tabla Periódica</h1>
+<h1>Tabla Periódica Interactiva</h1>
 
 <div class="tabla">
-  <div class="elemento no-metal" data-info="Hidrógeno: el elemento más liviano">
+  <div class="elemento no-metal" data-info="Hidrógeno: el elemento más liviano del universo">
     <span>H</span>
     <small>Hidrógeno</small>
+  </div>
+
+  <div class="elemento metal" data-info="Na: metal alcalino muy reactivo">
+    <span>Na</span>
+    <small>Sodio</small>
+  </div>
+
+  <div class="elemento metaloide" data-info="Si: base de la electrónica">
+    <span>Si</span>
+    <small>Silicio</small>
   </div>
 
   <div class="elemento no-metal" data-info="C: base de la vida">
@@ -20,12 +125,12 @@
     <small>Carbono</small>
   </div>
 
-  <div class="elemento no-metal" data-info="O: esencial para respirar">
+  <div class="elemento no-metal" data-info="O: esencial para la respiración">
     <span>O</span>
     <small>Oxígeno</small>
   </div>
 
-  <div class="elemento gas-noble" data-info="Neón: gas noble usado en luces">
+  <div class="elemento gas-noble" data-info="Ne: gas noble usado en luces">
     <span>Ne</span>
     <small>Neón</small>
   </div>
@@ -33,6 +138,32 @@
 
 <div id="infoBox">Tocá un elemento</div>
 
-<script src="script.js"></script>
+<div id="overlay"></div>
+
+<script>
+  const elementos = document.querySelectorAll(".elemento");
+  const infoBox = document.getElementById("infoBox");
+  const overlay = document.getElementById("overlay");
+
+  elementos.forEach(el => {
+    el.addEventListener("click", () => {
+      // cerrar todos
+      elementos.forEach(e => e.classList.remove("activo"));
+
+      // abrir seleccionado
+      el.classList.add("activo");
+      overlay.classList.add("activo");
+      infoBox.textContent = el.dataset.info;
+    });
+  });
+
+  // cerrar al tocar el fondo
+  overlay.addEventListener("click", () => {
+    elementos.forEach(e => e.classList.remove("activo"));
+    overlay.classList.remove("activo");
+    infoBox.textContent = "Tocá un elemento";
+  });
+</script>
+
 </body>
 </html>

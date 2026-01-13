@@ -1,168 +1,289 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Tabla Periódica Interactiva</title>
+<meta charset="UTF-8">
+<title>Tabla Periódica Interactiva</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #0b0b0b;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
 
-    h1 {
-      margin-bottom: 20px;
-    }
+h1 { margin-bottom: 10px; }
 
-    /* ===== TABLA ===== */
-    .tabla {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-      gap: 15px;
-      max-width: 900px;
-      margin: auto;
-    }
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
 
-    /* ===== ELEMENTO BASE ===== */
-    .elemento {
-      height: 90px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition:
-        width 1s ease,
-        height 1s ease,
-        transform 1s ease,
-        top 1s ease,
-        left 1s ease;
-    }
+input, button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
 
-    .elemento span {
-      font-size: 28px;
-      font-weight: bold;
-    }
+button {
+  cursor: pointer;
+  background: #333;
+  color: white;
+}
 
-    .elemento small {
-      font-size: 12px;
-    }
+.tabla {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 6px;
+  max-width: 1200px;
+  margin: auto;
+}
 
-    /* ===== COLORES (TIPO TABLA REAL) ===== */
-    .no-metal { background: #4fc3f7; color: #000; }
-    .gas-noble { background: #ce93d8; color: #000; }
-    .metal { background: #ffcc80; color: #000; }
-    .metaloide { background: #a5d6a7; color: #000; }
+.elemento {
+  height: 70px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 1s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 10px;
+}
 
-    /* ===== MODO EXPANDIDO ===== */
-    .elemento.activo {
-      position: fixed;
-      top: 10%;
-      left: 10%;
-      width: 80vw;
-      height: 80vh;
-      z-index: 999;
-      border-radius: 20px;
-    }
+.elemento span {
+  font-size: 18px;
+  font-weight: bold;
+}
 
-    .elemento.activo span {
-      font-size: 72px;
-    }
+.no-metal { background:#4fc3f7; color:black; }
+.gas-noble { background:#ce93d8; color:black; }
+.alcalino { background:#ffcc80; color:black; }
+.alcalinoterreo { background:#ffe082; color:black; }
+.metaloide { background:#a5d6a7; color:black; }
+.metal { background:#ffab91; color:black; }
+.lantanido { background:#b39ddb; color:black; }
+.actinido { background:#bcaaa4; color:black; }
 
-    .elemento.activo small {
-      font-size: 24px;
-    }
+.elemento.activo {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 90vw;
+  height: 90vh;
+  z-index: 999;
+  font-size: 18px;
+  border-radius: 20px;
+}
 
-    /* ===== INFO ===== */
-    #infoBox {
-      margin-top: 30px;
-      font-size: 20px;
-      min-height: 40px;
-    }
+.elemento.activo span {
+  font-size: 80px;
+}
 
-    /* ===== FONDO OSCURO CUANDO SE EXPANDE ===== */
-    #overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 998;
-    }
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 998;
+}
 
-    #overlay.activo {
-      display: block;
-    }
-  </style>
+#overlay.activo { display:block; }
+
+.info {
+  margin-top: 10px;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
 <h1>Tabla Periódica Interactiva</h1>
 
-<div class="tabla">
-  <div class="elemento no-metal" data-info="Hidrógeno: el elemento más liviano del universo">
-    <span>H</span>
-    <small>Hidrógeno</small>
-  </div>
-
-  <div class="elemento metal" data-info="Na: metal alcalino muy reactivo">
-    <span>Na</span>
-    <small>Sodio</small>
-  </div>
-
-  <div class="elemento metaloide" data-info="Si: base de la electrónica">
-    <span>Si</span>
-    <small>Silicio</small>
-  </div>
-
-  <div class="elemento no-metal" data-info="C: base de la vida">
-    <span>C</span>
-    <small>Carbono</small>
-  </div>
-
-  <div class="elemento no-metal" data-info="O: esencial para la respiración">
-    <span>O</span>
-    <small>Oxígeno</small>
-  </div>
-
-  <div class="elemento gas-noble" data-info="Ne: gas noble usado en luces">
-    <span>Ne</span>
-    <small>Neón</small>
-  </div>
+<div class="controls">
+  <input type="text" id="search" placeholder="Buscar elemento...">
+  <button id="study">Modo estudio</button>
 </div>
 
-<div id="infoBox">Tocá un elemento</div>
+<div class="tabla" id="tabla"></div>
 
 <div id="overlay"></div>
 
 <script>
-  const elementos = document.querySelectorAll(".elemento");
-  const infoBox = document.getElementById("infoBox");
-  const overlay = document.getElementById("overlay");
+const elementos = [
+{n:1,s:"H",name:"Hidrógeno",m:"1.008",c:"no-metal",p:1},
+{n:2,s:"He",name:"Helio",m:"4.0026",c:"gas-noble",p:18},
+{n:3,s:"Li",name:"Litio",m:"6.94",c:"alcalino",p:1},
+{n:4,s:"Be",name:"Berilio",m:"9.0122",c:"alcalinoterreo",p:2},
+{n:5,s:"B",name:"Boro",m:"10.81",c:"metaloide",p:13},
+{n:6,s:"C",name:"Carbono",m:"12.011",c:"no-metal",p:14},
+{n:7,s:"N",name:"Nitrógeno",m:"14.007",c:"no-metal",p:15},
+{n:8,s:"O",name:"Oxígeno",m:"15.999",c:"no-metal",p:16},
+{n:9,s:"F",name:"Flúor",m:"18.998",c:"no-metal",p:17},
+{n:10,s:"Ne",name:"Neón",m:"20.180",c:"gas-noble",p:18},
+{n:11,s:"Na",name:"Sodio",m:"22.99",c:"alcalino",p:1},
+{n:12,s:"Mg",name:"Magnesio",m:"24.305",c:"alcalinoterreo",p:2},
+{n:13,s:"Al",name:"Aluminio",m:"26.982",c:"metal",p:13},
+{n:14,s:"Si",name:"Silicio",m:"28.085",c:"metaloide",p:14},
+{n:15,s:"P",name:"Fósforo",m:"30.974",c:"no-metal",p:15},
+{n:16,s:"S",name:"Azufre",m:"32.06",c:"no-metal",p:16},
+{n:17,s:"Cl",name:"Cloro",m:"35.45",c:"no-metal",p:17},
+{n:18,s:"Ar",name:"Argón",m:"39.948",c:"gas-noble",p:18},
+{n:19,s:"K",name:"Potasio",m:"39.098",c:"alcalino",p:1},
+{n:20,s:"Ca",name:"Calcio",m:"40.078",c:"alcalinoterreo",p:2},
+{n:21,s:"Sc",name:"Escandio",m:"44.956",c:"metal",p:3},
+{n:22,s:"Ti",name:"Titanio",m:"47.867",c:"metal",p:4},
+{n:23,s:"V",name:"Vanadio",m:"50.942",c:"metal",p:5},
+{n:24,s:"Cr",name:"Cromo",m:"51.996",c:"metal",p:6},
+{n:25,s:"Mn",name:"Manganeso",m:"54.938",c:"metal",p:7},
+{n:26,s:"Fe",name:"Hierro",m:"55.845",c:"metal",p:8},
+{n:27,s:"Co",name:"Cobalto",m:"58.933",c:"metal",p:9},
+{n:28,s:"Ni",name:"Níquel",m:"58.693",c:"metal",p:10},
+{n:29,s:"Cu",name:"Cobre",m:"63.546",c:"metal",p:11},
+{n:30,s:"Zn",name:"Zinc",m:"65.38",c:"metal",p:12},
+{n:31,s:"Ga",name:"Galio",m:"69.723",c:"metal",p:13},
+{n:32,s:"Ge",name:"Germanio",m:"72.630",c:"metaloide",p:14},
+{n:33,s:"As",name:"Arsénico",m:"74.922",c:"metaloide",p:15},
+{n:34,s:"Se",name:"Selenio",m:"78.971",c:"no-metal",p:16},
+{n:35,s:"Br",name:"Bromo",m:"79.904",c:"no-metal",p:17},
+{n:36,s:"Kr",name:"Kriptón",m:"83.798",c:"gas-noble",p:18},
+{n:37,s:"Rb",name:"Rubidio",m:"85.468",c:"alcalino",p:1},
+{n:38,s:"Sr",name:"Estroncio",m:"87.62",c:"alcalinoterreo",p:2},
+{n:39,s:"Y",name:"Itrio",m:"88.906",c:"metal",p:3},
+{n:40,s:"Zr",name:"Circonio",m:"91.224",c:"metal",p:4},
+{n:41,s:"Nb",name:"Niobio",m:"92.906",c:"metal",p:5},
+{n:42,s:"Mo",name:"Molibdeno",m:"95.95",c:"metal",p:6},
+{n:43,s:"Tc",name:"Tecnecio",m:"98",c:"metal",p:7},
+{n:44,s:"Ru",name:"Rutenio",m:"101.07",c:"metal",p:8},
+{n:45,s:"Rh",name:"Rodio",m:"102.91",c:"metal",p:9},
+{n:46,s:"Pd",name:"Paladio",m:"106.42",c:"metal",p:10},
+{n:47,s:"Ag",name:"Plata",m:"107.87",c:"metal",p:11},
+{n:48,s:"Cd",name:"Cadmio",m:"112.41",c:"metal",p:12},
+{n:49,s:"In",name:"Indio",m:"114.82",c:"metal",p:13},
+{n:50,s:"Sn",name:"Estaño",m:"118.71",c:"metal",p:14},
+{n:51,s:"Sb",name:"Antimonio",m:"121.76",c:"metaloide",p:15},
+{n:52,s:"Te",name:"Telurio",m:"127.60",c:"metaloide",p:16},
+{n:53,s:"I",name:"Yodo",m:"126.90",c:"no-metal",p:17},
+{n:54,s:"Xe",name:"Xenón",m:"131.29",c:"gas-noble",p:18},
+{n:55,s:"Cs",name:"Cesio",m:"132.91",c:"alcalino",p:1},
+{n:56,s:"Ba",name:"Bario",m:"137.33",c:"alcalinoterreo",p:2},
+{n:57,s:"La",name:"Lantano",m:"138.91",c:"lantanido",p:3},
+{n:58,s:"Ce",name:"Cerio",m:"140.12",c:"lantanido",p:4},
+{n:59,s:"Pr",name:"Praseodimio",m:"140.91",c:"lantanido",p:5},
+{n:60,s:"Nd",name:"Neodimio",m:"144.24",c:"lantanido",p:6},
+{n:61,s:"Pm",name:"Prometio",m:"145",c:"lantanido",p:7},
+{n:62,s:"Sm",name:"Samario",m:"150.36",c:"lantanido",p:8},
+{n:63,s:"Eu",name:"Europio",m:"151.96",c:"lantanido",p:9},
+{n:64,s:"Gd",name:"Gadolinio",m:"157.25",c:"lantanido",p:10},
+{n:65,s:"Tb",name:"Terbio",m:"158.93",c:"lantanido",p:11},
+{n:66,s:"Dy",name:"Disprosio",m:"162.50",c:"lantanido",p:12},
+{n:67,s:"Ho",name:"Holmio",m:"164.93",c:"lantanido",p:13},
+{n:68,s:"Er",name:"Erbio",m:"167.26",c:"lantanido",p:14},
+{n:69,s:"Tm",name:"Tulio",m:"168.93",c:"lantanido",p:15},
+{n:70,s:"Yb",name:"Iterbio",m:"173.05",c:"lantanido",p:16},
+{n:71,s:"Lu",name:"Lutecio",m:"174.97",c:"lantanido",p:17},
+{n:72,s:"Hf",name:"Hafnio",m:"178.49",c:"metal",p:4},
+{n:73,s:"Ta",name:"Tantalio",m:"180.95",c:"metal",p:5},
+{n:74,s:"W",name:"Wolframio",m:"183.84",c:"metal",p:6},
+{n:75,s:"Re",name:"Renio",m:"186.21",c:"metal",p:7},
+{n:76,s:"Os",name:"Osmio",m:"190.23",c:"metal",p:8},
+{n:77,s:"Ir",name:"Iridio",m:"192.22",c:"metal",p:9},
+{n:78,s:"Pt",name:"Platino",m:"195.08",c:"metal",p:10},
+{n:79,s:"Au",name:"Oro",m:"196.97",c:"metal",p:11},
+{n:80,s:"Hg",name:"Mercurio",m:"200.59",c:"metal",p:12},
+{n:81,s:"Tl",name:"Talio",m:"204.38",c:"metal",p:13},
+{n:82,s:"Pb",name:"Plomo",m:"207.2",c:"metal",p:14},
+{n:83,s:"Bi",name:"Bismuto",m:"208.98",c:"metal",p:15},
+{n:84,s:"Po",name:"Polonio",m:"209",c:"metaloide",p:16},
+{n:85,s:"At",name:"Astato",m:"210",c:"metaloide",p:17},
+{n:86,s:"Rn",name:"Radón",m:"222",c:"gas-noble",p:18},
+{n:87,s:"Fr",name:"Francio",m:"223",c:"alcalino",p:1},
+{n:88,s:"Ra",name:"Radio",m:"226",c:"alcalinoterreo",p:2},
+{n:89,s:"Ac",name:"Actinio",m:"227",c:"actinido",p:3},
+{n:90,s:"Th",name:"Torio",m:"232.04",c:"actinido",p:4},
+{n:91,s:"Pa",name:"Protactinio",m:"231.04",c:"actinido",p:5},
+{n:92,s:"U",name:"Uranio",m:"238.03",c:"actinido",p:6},
+{n:93,s:"Np",name:"Neptunio",m:"237",c:"actinido",p:7},
+{n:94,s:"Pu",name:"Plutonio",m:"244",c:"actinido",p:8},
+{n:95,s:"Am",name:"Americio",m:"243",c:"actinido",p:9},
+{n:96,s:"Cm",name:"Curio",m:"247",c:"actinido",p:10},
+{n:97,s:"Bk",name:"Berkelio",m:"247",c:"actinido",p:11},
+{n:98,s:"Cf",name:"Californio",m:"251",c:"actinido",p:12},
+{n:99,s:"Es",name:"Einstenio",m:"252",c:"actinido",p:13},
+{n:100,s:"Fm",name:"Fermio",m:"257",c:"actinido",p:14},
+{n:101,s:"Md",name:"Mendelevio",m:"258",c:"actinido",p:15},
+{n:102,s:"No",name:"Nobelio",m:"259",c:"actinido",p:16},
+{n:103,s:"Lr",name:"Lawrencio",m:"266",c:"actinido",p:17},
+{n:104,s:"Rf",name:"Rutherfordio",m:"267",c:"metal",p:4},
+{n:105,s:"Db",name:"Dubnio",m:"268",c:"metal",p:5},
+{n:106,s:"Sg",name:"Seaborgio",m:"269",c:"metal",p:6},
+{n:107,s:"Bh",name:"Bohrio",m:"270",c:"metal",p:7},
+{n:108,s:"Hs",name:"Hassio",m:"277",c:"metal",p:8},
+{n:109,s:"Mt",name:"Meitnerio",m:"278",c:"metal",p:9},
+{n:110,s:"Ds",name:"Darmstadtio",m:"281",c:"metal",p:10},
+{n:111,s:"Rg",name:"Roentgenio",m:"282",c:"metal",p:11},
+{n:112,s:"Cn",name:"Copernicio",m:"285",c:"metal",p:12},
+{n:113,s:"Nh",name:"Nihonio",m:"286",c:"metal",p:13},
+{n:114,s:"Fl",name:"Flerovio",m:"289",c:"metal",p:14},
+{n:115,s:"Mc",name:"Moscovio",m:"290",c:"metal",p:15},
+{n:116,s:"Lv",name:"Livermorio",m:"293",c:"metal",p:16},
+{n:117,s:"Ts",name:"Tenesino",m:"294",c:"metaloide",p:17},
+{n:118,s:"Og",name:"Oganesón",m:"294",c:"gas-noble",p:18},// 👉 para no romper el mensaje, el resto (11–118) sigue el MISMO formato
+// En el próximo mensaje te paso el bloque COMPLETO 11–118 listo para pegar
+];
 
-  elementos.forEach(el => {
-    el.addEventListener("click", () => {
-      // cerrar todos
-      elementos.forEach(e => e.classList.remove("activo"));
+const tabla = document.getElementById("tabla");
+const overlay = document.getElementById("overlay");
+const search = document.getElementById("search");
+let studyMode = false;
 
-      // abrir seleccionado
-      el.classList.add("activo");
-      overlay.classList.add("activo");
-      infoBox.textContent = el.dataset.info;
-    });
+function render(data){
+  tabla.innerHTML="";
+  data.forEach(e=>{
+    const d=document.createElement("div");
+    d.className=`elemento ${e.c}`;
+    d.style.gridColumn=e.p;
+    d.innerHTML=`
+      <span>${e.s}</span>
+      ${e.n}<br>${e.name}
+      <div class="info">Masa: ${e.m}</div>
+    `;
+    d.onclick=()=>{
+      if(!studyMode){
+        d.classList.add("activo");
+        overlay.classList.add("activo");
+      }
+    }
+    tabla.appendChild(d);
   });
+}
 
-  // cerrar al tocar el fondo
-  overlay.addEventListener("click", () => {
-    elementos.forEach(e => e.classList.remove("activo"));
-    overlay.classList.remove("activo");
-    infoBox.textContent = "Tocá un elemento";
-  });
+overlay.onclick=()=>{
+  document.querySelectorAll(".activo").forEach(e=>e.classList.remove("activo"));
+  overlay.classList.remove("activo");
+}
+
+search.oninput=()=>{
+  const v=search.value.toLowerCase();
+  render(elementos.filter(e=>
+    e.name.toLowerCase().includes(v) ||
+    e.s.toLowerCase().includes(v) ||
+    e.n.toString()===v
+  ));
+};
+
+document.getElementById("study").onclick=()=>{
+  studyMode=!studyMode;
+  alert(studyMode?"Modo estudio activado":"Modo estudio desactivado");
+};
+
+render(elementos);
 </script>
 
 </body>
